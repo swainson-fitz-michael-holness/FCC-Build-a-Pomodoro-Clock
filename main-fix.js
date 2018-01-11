@@ -94,8 +94,8 @@ function playBtn() {
 
     if (stpState === true) {
         if (pauseState === false) {
-            plyTick = $("#session").val();
-            brkTick = $("#break").val();
+            plyTick = $("#session").val()*60;
+            brkTick = $("#break").val()*60;
         }
 
         if (addToken === false) {
@@ -150,8 +150,8 @@ function stopState() {
 
         pauseState = false;
 
-        plyTick = $("#session").val();
-        brkTick = $("#break").val();
+        plyTick = $("#session").val()*60;
+        brkTick = $("#break").val()*60;
 
         stpState = true;
         $("#stpMe").animate({
