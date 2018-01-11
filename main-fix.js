@@ -43,6 +43,11 @@ function processCntDwn(tick) {
             tick -= 1;
             $("#time").html(countDown(tick));
             processCntDwn(tick);
+            if(addToken === true) {
+                plyTick = tick;
+            } else if(addToken === false) {
+                brkTick = tick;
+            }
         } else if (tick === 0) {
             playBtn();
         }
@@ -117,6 +122,7 @@ function playBtn() {
             $("#narrator").html(
                 "break!"
             );
+            pauseState = false;
         }
     }
 }
@@ -136,7 +142,7 @@ function stopState() {
 
     $("#pauseCtrl").on("click", function () {
         pauseState = true;
-                alert(plyTick);
+//                alert(brkTick);
         clearTimeout(sessTimeOut);
 
         $("#progVal").stop();
