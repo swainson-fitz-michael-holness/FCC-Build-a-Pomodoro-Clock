@@ -43,9 +43,9 @@ function processCntDwn(tick) {
             tick -= 1;
             $("#time").html(countDown(tick));
             processCntDwn(tick);
-            if(addToken === true) {
+            if (addToken === true) {
                 plyTick = tick;
-            } else if(addToken === false) {
+            } else if (addToken === false) {
                 brkTick = tick;
             }
         } else if (tick === 0) {
@@ -140,14 +140,53 @@ function stopState() {
         playBtn();
     });
 
+    $("#stpCtrl").on("click", function () {
+        clearTimeout(sessTimeOut);
+        stpState = false;
+        plyState = false;
+        addToken = false;
+
+        $("#progVal").stop();
+
+        pauseState = false;
+
+        plyTick = $("#session").val();
+        brkTick = $("#break").val();
+
+        stpState = true;
+        $("#stpMe").animate({
+            opacity: "0.2"
+        });
+        sessColor();
+        sessKnob();
+        brkKnob();
+
+        sessColor();
+        $("#narrator").html(
+            "Pomodoro"
+        );
+        $("#time").html(
+            "HI!"
+        );
+
+        $("#progVal").css("strokeDashoffset", "818.3032");
+
+        $("#plyCtrl").css("display", "inline");
+        $("#pauseCtrl").css("display", "none");
+        $(".slide").css("opacity", "1");
+
+        document.getElementById("session").disabled = false;
+        document.getElementById("break").disabled = false;
+    });
+
     $("#pauseCtrl").on("click", function () {
         pauseState = true;
-//                alert(brkTick);
         clearTimeout(sessTimeOut);
 
         $("#progVal").stop();
         $("#plyCtrl").css("display", "inline");
         $("#pauseCtrl").css("display", "none");
+
         addToken = !addToken;
     });
 };
