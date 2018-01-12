@@ -38,17 +38,17 @@ function countDown(totalSec) {
 }
 
 function processCntDwn(tick) {
-    sessTimeOut = setTimeout(function () {
+    sessTimeOut = setInterval(function () {
         if (tick !== 0) {
             tick -= 1;
             $("#time").html(countDown(tick));
-            processCntDwn(tick);
             if (addToken === true) {
                 plyTick = tick;
             } else if (addToken === false) {
                 brkTick = tick;
             }
         } else if (tick === 0) {
+            clearInterval(sessTimeOut);
             playBtn();
         }
     }, 1000);
@@ -62,10 +62,10 @@ function processCntDwn(tick) {
 //
 function sessKnob() {
     $("#session").on("input", function () {
-        $("#time").html($("#session").val());
+        $("#time").html($("#session").val() + "<span  id='mins' > m</span>");
         sessColor();
         $("#narrator").html(
-            "Session time"
+            "Set Session"
         );
     });
 
@@ -73,75 +73,18 @@ function sessKnob() {
 
 function brkKnob() {
     $("#break").on("input", function () {
-        $("#time").html($("#break").val());
+        $("#time").html($("#break").val() + "<span  id='mins' > m</span>");
         brkColor();
         $("#narrator").html(
-            "Break time"
+            "Set Break"
         );
     });
 }
 
 function playBtn() {
-
-    $(".slide").css("opacity", "0.3");
-    document.getElementById("session").disabled = true;
-    document.getElementById("break").disabled = true;
-    $("#plyCtrl").css("display", "none");
-    $("#pauseCtrl").css("display", "inline");
-    $("#stpMe").animate({
-        opacity: "1"
-    });
-
-    if (stpState === true) {
-        if (pauseState === false) {
-            plyTick = $("#session").val()*60;
-            brkTick = $("#break").val()*60;
-        }
-
-        if (addToken === false) {
-            $("#progVal").animate({
-                strokeDashoffset: 0
-            }, plyTick * 1000, "linear");
-            addToken = true;
-            sessColor(); //LOOK HERE
-            $("#time").html(countDown(plyTick));
-            $("#progVal").attr("stroke", "#45C1BF");
-            processCntDwn(plyTick);
-            $("#narrator").html(
-                "Work!"
-            );
-        } else if (addToken === true) {
-            $("#progVal").animate({
-                strokeDashoffset: 818.3032
-            }, brkTick * 1000, "linear");
-            addToken = false;
-            brkColor();
-            $("#time").html(countDown(brkTick));
-            $("#progVal").attr("stroke", "#D34444");
-            processCntDwn(brkTick);
-            $("#narrator").html(
-                "break!"
-            );
-            pauseState = false;
-        }
-    }
-}
-
-function stopState() {
-    stpState = true;
-    $("#stpMe").animate({
-        opacity: "0.2"
-    });
-    sessColor();
-    sessKnob();
-    brkKnob();
-
-    $("#plyCtrl").on("click", function () {
-        playBtn();
-    });
-
     $("#stpCtrl").on("click", function () {
-        clearTimeout(sessTimeOut);
+        $("#stpCtrl").off("click");
+        clearInterval(sessTimeOut);
         stpState = false;
         plyState = false;
         addToken = false;
@@ -150,8 +93,8 @@ function stopState() {
 
         pauseState = false;
 
-        plyTick = $("#session").val()*60;
-        brkTick = $("#break").val()*60;
+        plyTick = $("#session").val() * 60;
+        brkTick = $("#break").val() * 60;
 
         stpState = true;
         $("#stpMe").animate({
@@ -179,9 +122,66 @@ function stopState() {
         document.getElementById("break").disabled = false;
     });
 
+    $(".slide").css("opacity", "0.3");
+    document.getElementById("session").disabled = true;
+    document.getElementById("break").disabled = true;
+    $("#plyCtrl").css("display", "none");
+    $("#pauseCtrl").css("display", "inline");
+    $("#stpMe").animate({
+        opacity: "1"
+    });
+
+    if (stpState === true) {
+        if (pauseState === false) {
+            plyTick = $("#session").val() * 60;
+            brkTick = $("#break").val() * 60;
+        }
+
+        if (addToken === false) {
+            $("#progVal").animate({
+                strokeDashoffset: 0
+            }, plyTick * 1000, "linear");
+            addToken = true;
+            sessColor(); //LOOK HERE
+            $("#time").html(countDown(plyTick));
+            $("#progVal").attr("stroke", "#45C1BF");
+            processCntDwn(plyTick);
+            $("#narrator").html(
+                "Work!"
+            );
+        } else if (addToken === true) {
+            $("#progVal").animate({
+                strokeDashoffset: 818.3032
+            }, brkTick * 1000, "linear");
+            addToken = false;
+            brkColor();
+            $("#time").html(countDown(brkTick));
+            $("#progVal").attr("stroke", "#D34444");
+            processCntDwn(brkTick);
+            $("#narrator").html(
+                "Break!"
+            );
+            pauseState = false;
+        }
+    }
+}
+
+function stopState() {
+    stpState = true;
+    $("#stpMe").animate({
+        opacity: "0.2"
+    });
+    sessColor();
+    sessKnob();
+    brkKnob();
+
+    $("#plyCtrl").on("click", function () {
+        playBtn();
+    });
+
     $("#pauseCtrl").on("click", function () {
         pauseState = true;
-        clearTimeout(sessTimeOut);
+        clearInterval(sessTimeOut);
 
         $("#progVal").stop();
         $("#plyCtrl").css("display", "inline");

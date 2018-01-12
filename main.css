@@ -187,4 +187,10 @@ p {
     opacity: 0.2;
 }
 
-/
+#nameSess {
+    color: #45C1BF;
+}
+
+#nameBrk {
+    color: #D34444;
+}
