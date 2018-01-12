@@ -1,6 +1,3 @@
-// {{ *stpState( {SetSess() setBrk() } ) }{ plyState( { **pause( { adjSess()  adjBrk() } )} ) }}
-
-
 var stpState = false;
 var plyState = false;
 var addToken = false;
