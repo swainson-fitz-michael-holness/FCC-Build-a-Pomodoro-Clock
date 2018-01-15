@@ -1,4 +1,4 @@
-window.onload = function() {
+window.onload = function () {
     var stpState = false;
     var plyState = false;
     var addToken = false;
@@ -38,6 +38,7 @@ window.onload = function() {
     function processCntDwn(tick) {
         sessTimeOut = setInterval(function () {
             if (tick !== 0) {
+                document.getElementById("tick").cloneNode().play();
                 tick -= 1;
                 $("#time").html(countDown(tick));
                 if (addToken === true) {
@@ -129,6 +130,7 @@ window.onload = function() {
             opacity: "1"
         });
 
+
         if (stpState === true) {
             if (pauseState === false) {
                 plyTick = $("#session").val() * 60;
@@ -147,6 +149,7 @@ window.onload = function() {
                 $("#narrator").html(
                     "Work!"
                 );
+                document.getElementById("start").cloneNode().play();
             } else if (addToken === true) {
                 $("#progVal").animate({
                     strokeDashoffset: 818.3032
@@ -159,6 +162,7 @@ window.onload = function() {
                 $("#narrator").html(
                     "Break!"
                 );
+                            document.getElementById("stop").cloneNode().play();
                 pauseState = false;
             }
         }
@@ -174,6 +178,7 @@ window.onload = function() {
         brkKnob();
 
         $("#plyCtrl").on("click", function () {
+
             playBtn();
         });
 
