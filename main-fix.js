@@ -38,7 +38,6 @@ window.onload = function () {
     function processCntDwn(tick) {
         sessTimeOut = setInterval(function () {
             if (tick !== 0) {
-                document.getElementById("tick").cloneNode().play();
                 tick -= 1;
                 $("#time").html(countDown(tick));
                 if (addToken === true) {
