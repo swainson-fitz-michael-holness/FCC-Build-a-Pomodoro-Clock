@@ -6,6 +6,7 @@ window.onload = function () {
     var pauseState = false;
     var plyTick;
     var brkTick;
+    
     //
     // Attribute Section
     //
@@ -192,9 +193,6 @@ window.onload = function () {
             addToken = !addToken;
         });
     };
-
-
-
     //INIT
     stopState();
 }
