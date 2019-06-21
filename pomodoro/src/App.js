@@ -1,14 +1,16 @@
 import React from "react";
 import "./App.css";
+import moment from 'moment/moment.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      num_b: 5,
+      num_b: 3,
       num_s: 25,
-      timer_label: true,
-      start: false
+      timer_label: false,
+      start: false,
+      countdown: "25:00"
 
     }
   }
@@ -19,33 +21,60 @@ class App extends React.Component {
 
     if(id === "break-increment") {
       if(md.num_b < 60) {
+
         this.setState({
-          num_b: this.state.num_b + 1
+          num_b: md.num_b + 1,
         });
-      } 
+
+        if(md.timer_label === false) {
+          this.setState({
+            countdown: ("0" + (md.num_b + 1)).slice(-2) + ":00" //custom method to get the string format mm:ss = mm:00
+          });
+        }
+      }   
     }
 
     if(id === "break-decrement") {
       if(md.num_b > 1){
         this.setState({
-          num_b: this.state.num_b - 1
+          num_b: md.num_b - 1,
         });
+
+        if(md.timer_label === false) {
+          this.setState({
+            countdown: (md.num_b - 1) + ":00"
+          });
+        }
       }
     }
 
     if(id === "session-increment") {
       if(md.num_s < 60){
         this.setState({
-          num_s: this.state.num_s + 1
+          num_s: this.state.num_s + 1,
         });
-      }  
+
+        if(md.timer_label === true) {
+          this.setState({
+            countdown: (md.num_s + 1) + ":00"
+          });
+        }
+      }
+      
+      
     }
 
     if(id === "session-decrement") {
       if(md.num_s > 1){
         this.setState({
-          num_s: this.state.num_s - 1
+          num_s: this.state.num_s - 1,
         });
+
+        if(md.timer_label === true) {
+          this.setState({
+            countdown: (md.num_s - 1) + ":00"
+          });
+        }
       }
     }
   };
@@ -57,7 +86,7 @@ class App extends React.Component {
       document.getElementById("break-decrement").disabled = el;
       document.getElementById("break-increment").disabled = el;
 
-      
+
   }
 
   initTimer = () => {
@@ -66,11 +95,16 @@ class App extends React.Component {
     },() => {this.start_pause(this.state.start)});
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     num_b: document.getElementById("break-length").innerText,
-  //     num_s: document.getElementById("session-length").innerText,
-  //   });
+  
+
+  // componentDidUpdate() {
+  //   var md = this.state;
+
+  //   if(md.timer_label === false) { // bool is synomynous with timer label break
+  //     this.setState({
+  //           countdown: moment.utc(((md.num_b)*1000)*60).format("mm:ss")
+  //     });
+  //   }
   // }
 
   render() {
@@ -102,7 +136,7 @@ class App extends React.Component {
           {/* timer display block */}
           <div>
             <h2 id="timer-label">{state.timer_label ? "session" : "break"}</h2>
-            <h2 id="time-left">00:11</h2>
+            <h2 id="time-left">{state.countdown}</h2>
           </div>
 
           {/* start control block */}
