@@ -1,14 +1,15 @@
 import React from "react";
 import "./App.css";
 import moment from 'moment/moment.js';
+var timer;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      num_b: 3,
+      num_b: 5,
       num_s: 25,
-      timer_label: false,
+      timer_label: true,
       start: false,
       countdown: "25:00"
 
@@ -42,7 +43,7 @@ class App extends React.Component {
 
         if(md.timer_label === false) {
           this.setState({
-            countdown: (md.num_b - 1) + ":00"
+            countdown: ("0" + (md.num_b - 1)).slice(-2) + ":00"
           });
         }
       }
@@ -56,7 +57,7 @@ class App extends React.Component {
 
         if(md.timer_label === true) {
           this.setState({
-            countdown: (md.num_s + 1) + ":00"
+            countdown: ("0" + (md.num_s + 1)).slice(-2) + ":00"
           });
         }
       }
@@ -72,7 +73,7 @@ class App extends React.Component {
 
         if(md.timer_label === true) {
           this.setState({
-            countdown: (md.num_s - 1) + ":00"
+            countdown: ("0" + (md.num_s - 1)).slice(-2) + ":00"
           });
         }
       }
@@ -88,24 +89,49 @@ class App extends React.Component {
 
 
   }
-
-  initTimer = () => {
-    this.setState({
-      start: !this.state.start
-    },() => {this.start_pause(this.state.start)});
+  
+  tick = (t_t) => {
+    var md = this.state;
+    
+    if(t_t > 0) {
+      timer = setTimeout(
+          () => {
+            t_t = t_t - 1;
+            var min = Math.floor(t_t / 60);
+            var sec = t_t % 60;
+            this.setState({
+              countdown: ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2)
+            }, this.tick(t_t)); 
+          }
+        , 1000);
+      } else {
+        t_t = (md.num_b) * 60;
+        this.setState({
+          timer_label: !md.timer_label,
+          countdown: ("0" + (md.num_b)).slice(-2) + ":00"
+        }, this.tick(t_t))
+      }   
   }
 
-  
+  initTimer = () => {
+    var md = this.state;
+    var time_arr = md.countdown.split(":");
+    var total_time = (time_arr[0] * 60) + parseInt(time_arr[1], 10);
 
-  // componentDidUpdate() {
-  //   var md = this.state;
+    
 
-  //   if(md.timer_label === false) { // bool is synomynous with timer label break
-  //     this.setState({
-  //           countdown: moment.utc(((md.num_b)*1000)*60).format("mm:ss")
-  //     });
-  //   }
-  // }
+    this.setState({
+      start: !md.start
+    },() => {
+      this.start_pause(this.state.start);
+      console.log(md.start)
+      if(md.start === true) {
+        clearTimeout(timer);
+      } else {
+        this.tick(total_time);
+      }
+    });
+  }
 
   render() {
     const state = this.state;
