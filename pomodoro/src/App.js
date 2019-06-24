@@ -16,6 +16,7 @@ class App extends React.Component {
     }
   }
 
+  // Each condition represnts a button
   modifyNum_x = (e) => {
     var id = e.target.id;
     var md = this.state
@@ -91,47 +92,56 @@ class App extends React.Component {
   }
   
   tick = (t_t) => {
-    var md = this.state;
-    
-    if(t_t > 0) {
-      timer = setTimeout(
-          () => {
+    var tic = this.state;
+    timer = setTimeout(
+        () => {
+          if(t_t > 0){
             t_t = t_t - 1;
             var min = Math.floor(t_t / 60);
             var sec = t_t % 60;
             this.setState({
               countdown: ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2)
             }, this.tick(t_t)); 
-          }
-        , 1000);
-      } else {
-        t_t = (md.num_b) * 60;
-        this.setState({
-          timer_label: !md.timer_label,
-          countdown: ("0" + (md.num_b)).slice(-2) + ":00"
-        }, this.tick(t_t))
-      }   
+            // console.log(("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2) +"vs"+t_t)
+          } else{
+            t_t = (tic.num_b) * 60;
+            this.setState({
+              timer_label: !tic.timer_label,
+              countdown: ("0" + (tic.num_b)).slice(-2) + ":00"
+            }, this.tick(t_t))
+          };
+        }, 1000);  
   }
 
   initTimer = () => {
-    var md = this.state;
-    var time_arr = md.countdown.split(":");
+    var timer_block = this.state;
+    var time_arr = timer_block.countdown.split(":");
     var total_time = (time_arr[0] * 60) + parseInt(time_arr[1], 10);
 
-    
-
     this.setState({
-      start: !md.start
+      start: !timer_block.start
     },() => {
       this.start_pause(this.state.start);
-      console.log(md.start)
-      if(md.start === true) {
+      console.log(timer_block.start)
+      if(timer_block.start === true) {
         clearTimeout(timer);
       } else {
         this.tick(total_time);
       }
     });
   }
+  
+  reset = () => {
+    this.start_pause(false);
+    clearTimeout(timer);
+    this.setState({
+      num_b: 5,
+      num_s: 25,
+      countdown: "25:00",
+      timer_label: true,
+      start: false,
+    });
+  };
 
   render() {
     const state = this.state;
@@ -168,7 +178,7 @@ class App extends React.Component {
           {/* start control block */}
           <div>
             <button id="start_stop" onClick={this.initTimer}>start</button>
-            <button id="reset">reset</button>
+            <button id="reset" onClick={this.reset}>reset</button>
           </div>
         </div>
       </div>
