@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import moment from 'moment/moment.js';
 var timer;
 
 class App extends React.Component {
@@ -82,13 +81,10 @@ class App extends React.Component {
   };
 
   start_pause = (el) => {   
-    console.log("fired")
       document.getElementById("session-decrement").disabled = el;
       document.getElementById("session-increment").disabled = el;
       document.getElementById("break-decrement").disabled = el;
       document.getElementById("break-increment").disabled = el;
-
-
   }
   
   tick = (t_t) => {
@@ -102,9 +98,9 @@ class App extends React.Component {
             this.setState({
               countdown: ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2)
             }, this.tick(t_t)); 
-            // console.log(("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2) +"vs"+t_t)
           } else{
             t_t = (tic.num_b) * 60;
+            document.getElementById("beep").play();
             this.setState({
               timer_label: !tic.timer_label,
               countdown: ("0" + (tic.num_b)).slice(-2) + ":00"
@@ -122,7 +118,6 @@ class App extends React.Component {
       start: !timer_block.start
     },() => {
       this.start_pause(this.state.start);
-      console.log(timer_block.start)
       if(timer_block.start === true) {
         clearTimeout(timer);
       } else {
@@ -133,6 +128,8 @@ class App extends React.Component {
   
   reset = () => {
     this.start_pause(false);
+    document.getElementById("beep").pause()
+    document.getElementById("beep").currentTime = 0;
     clearTimeout(timer);
     this.setState({
       num_b: 5,
@@ -180,6 +177,9 @@ class App extends React.Component {
             <button id="start_stop" onClick={this.initTimer}>start</button>
             <button id="reset" onClick={this.reset}>reset</button>
           </div>
+
+          {/* Audio Block */}
+          <audio id="beep" src="http://res.cloudinary.com/dxaedzhnh/video/upload/v1516053449/start.mp3" type="audio/mpeg"></audio>
         </div>
       </div>
     );
