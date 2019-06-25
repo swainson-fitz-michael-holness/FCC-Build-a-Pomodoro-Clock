@@ -144,25 +144,27 @@ class App extends React.Component {
     const state = this.state;
 
     return (
-      <div className="App">
-        <div className="app-frame">
+      <div className="frame">
+        <div className="container">
+          <h1>Pomodoro App</h1>
+
           {/* break block */}
           <div className="break-block">
-            <h1 id="break-label">Break Length</h1>
-            <div>
-              <button id="break-increment" onClick={(e) => this.modifyNum_x(e)}>+</button>
-              <p id="break-length">{state.num_b}</p>
-              <button id="break-decrement" onClick={(e) => this.modifyNum_x(e)}>-</button>
+            <h3 id="break-label">Break Length</h3>
+            <div className="controls">
+              <div className="control-item"><button className="btn-control" id="break-increment" onClick={(e) => this.modifyNum_x(e)}>+</button></div>
+              <div className="control-item"><p className="input-num" id="break-length">{state.num_b}</p></div>
+              <div className="control-item"><button className="btn-control" id="break-decrement" onClick={(e) => this.modifyNum_x(e)}>-</button></div>
             </div>
           </div>
 
           {/* session block */}
           <div>
-            <h1 id="session-label">Session Length</h1>
-            <div>
-              <button id="session-increment" onClick={(e) => this.modifyNum_x(e)} >+</button>
-              <p id="session-length">{state.num_s}</p>
-              <button id="session-decrement" onClick={(e) => this.modifyNum_x(e)}>-</button>
+            <h3 id="session-label">Session Length</h3>
+            <div className="controls">
+              <div className="control-item"><button className="btn-control" id="session-increment" onClick={(e) => this.modifyNum_x(e)} >+</button></div>
+              <div className="control-item"><p className="input-num" id="session-length">{state.num_s}</p></div>
+              <div className="control-item"><button className="btn-control" id="session-decrement" onClick={(e) => this.modifyNum_x(e)}>-</button></div>  
             </div>
           </div>
 
@@ -174,9 +176,11 @@ class App extends React.Component {
 
           {/* start control block */}
           <div>
-            <button id="start_stop" onClick={this.initTimer}>start</button>
-            <button id="reset" onClick={this.reset}>reset</button>
+            <button className="play-controls" id="start_stop" onClick={this.initTimer}>start</button>
+            <button className="reset-controls" id="reset" onClick={this.reset}>reset</button>
           </div>
+
+          <p className="sig">coded by Swainson Holness</p>
 
           {/* Audio Block */}
           <audio id="beep" src="http://res.cloudinary.com/dxaedzhnh/video/upload/v1516053449/start.mp3" type="audio/mpeg"></audio>
